@@ -106,11 +106,11 @@ public class CocktailApi {
     }
     public void addAccountUsers(String name, String id, String role, String job, String Yn) {
         try {
-            URL url = new URL("http://api-server:8080/api/account/1/users"); //URL 객체 생성
+            URL url = new URL("http://api-server:8080/api/account/1/user"); //URL 객체 생성
             JSONObject body = new JSONObject();
             body.put("userName", name);
             body.put("userId", id);
-            body.put("userRole", role);
+            body.put("roles", role);
             body.put("userJob", job);
 
             HttpURLConnection conn = null;
