@@ -17,6 +17,6 @@ public class JmP3Application {
 
     public static void main(String[] args) throws IOException {
         CocktailApi api = new CocktailApi();
-        api.modifyAccountUsers();
+        api.modifyUserInactive();
     }
 }
