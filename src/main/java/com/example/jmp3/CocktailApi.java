@@ -148,37 +148,43 @@ public class CocktailApi {
     }
 
     public void modifyAccountUsers() {
-        try {
-            URL url = new URL("http://api-server:8080/api/account/1/user/2220000"); //URL 객체 생성
-            JSONObject body = new JSONObject();
-            body.put("userName", "조시우");
-            body.put("userRole", "user");
-            body.put("userJob", "경영지원실");
-            body.put("inactiveYn", "N");
+        JSONObject data = new JSONObject();
 
+        ArrayList rolearr = new ArrayList();
+        rolearr.add("DEVOPS");
+
+        data.put("userName", "조세호");
+        data.put("userId", 223333);
+        data.put("roles", rolearr);
+        data.put("userDepartment", "개발1실");
+
+        System.out.println(data);
+
+        try {
+            String host_url = "http://api-server:8080/api/account/1/user/136";
             HttpURLConnection conn = null;
 
+            URL url = new URL(host_url);
             conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("PUT");
-            conn.setRequestProperty("Content-type", "application/json");
-            conn.setRequestProperty("Accept", "application/json"); //api 리턴값을 json으로 받을 경우
-            conn.setDoOutput(true);
 
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type", "application/json");
+            //request header set
+            conn.setRequestProperty("user-id", "1");
+            conn.setRequestProperty("user-role", "ADMIN");
+
+            conn.setDoOutput(true);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            bw.write(body.toString());
+
+            bw.write(data.toString());
             bw.flush();
             bw.close();
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String returnMsg = in.readLine();
+            System.out.println("응답 메시지: " + returnMsg);
+        } catch (IOException ie) {
 
-            String output;
-            while ((output = br.readLine()) != null) {
-                System.out.println(output);
-            }
-
-            conn.disconnect();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
     }
     public void modifyUserInactive() {
