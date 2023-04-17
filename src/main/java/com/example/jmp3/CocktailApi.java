@@ -7,6 +7,7 @@ import org.json.simple.parser.JSONParser;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class CocktailApi {
     public void getAccountSeq() {
@@ -104,69 +105,46 @@ public class CocktailApi {
             System.out.println(e.getMessage());
         }
     }
-    public void addAccountUsers() throws IOException {
-        URL url = new URL("http://api-server:8080/api/account/1/user"); //URL 객체 생성
-        HttpURLConnection con = (HttpURLConnection) url.openConnection();
-        con.setRequestMethod("POST");
-        //request header set
-        con.setRequestProperty("user-id", "1");
-        con.setRequestProperty("user-role", "ADMIN");
-        con.setRequestProperty("Content-Type", "application/json;utf-8");
-        con.setRequestProperty("Accept", "application/json");
-        con.setDoOutput(true);
-        String jsonInputString = "{ \"userName\": \"조세호\", \"userId\": 223333, \"roles\": \"[\"DEVOPS\"]\", \"userDepartment\": \"개발3실\"}";
+    public void addAccountUsers(){
 
-        try(OutputStream os = con.getOutputStream()) {
-            byte[] input = jsonInputString.getBytes("utf-8");
-            os.write(input, 0, input.length);
-        }
+        JSONObject data = new JSONObject();
 
-        //Response data 받는 부분
-        try(BufferedReader br = new BufferedReader(
-                new InputStreamReader(con.getInputStream(), "utf-8"))){
-            StringBuilder response = new StringBuilder();
-            String responseLine = null;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
-            System.out.println(response.toString());
+        ArrayList rolearr = new ArrayList();
+        rolearr.add("DEVOPS");
+
+        data.put("userName", "조세호");
+        data.put("userId", 223333);
+        data.put("roles", rolearr);
+        data.put("userDepartment", "개발3실");
+
+        System.out.println(data);
+
+        try {
+            String host_url = "http://api-server:8080/api/account/1/user";
+            HttpURLConnection conn = null;
+
+            URL url = new URL(host_url);
+            conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            //request header set
+            conn.setRequestProperty("user-id", "1");
+            conn.setRequestProperty("user-role", "ADMIN");
+
+            conn.setDoOutput(true);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+
+            bw.write(data.toString());
+            bw.flush();
+            bw.close();
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String returnMsg = in.readLine();
+            System.out.println("응답 메시지: " + returnMsg);
+        } catch (IOException ie) {
+
         }
-//        try {
-//            URL url = new URL("http://api-server:8080/api/account/1/user"); //URL 객체 생성
-//            JSONObject body = new JSONObject();
-//            body.put("userName", name);
-//            body.put("userId", id);
-//            body.put("roles", role);
-//            body.put("userJob", job);
-//
-//            HttpURLConnection conn = null;
-//
-//            conn = (HttpURLConnection) url.openConnection();
-//            conn.setRequestMethod("POST");
-//            //request header set
-//            conn.setRequestProperty("user-id", "1");
-//            conn.setRequestProperty("user-role", "ADMIN");
-//
-//            conn.setRequestProperty("Content-Type", "application/json;utf-8");
-//            conn.setRequestProperty("Accept", "application/json"); //api 리턴값을 json으로 받을 경우
-//            conn.setDoOutput(true);
-//
-//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-//            bw.write(body.toString());
-//            bw.flush();
-//            bw.close();
-//
-//            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//
-//            String output;
-//            while ((output = br.readLine()) != null) {
-//                System.out.println(output);
-//            }
-//
-//            conn.disconnect();
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     public void modifyAccountUsers() {
