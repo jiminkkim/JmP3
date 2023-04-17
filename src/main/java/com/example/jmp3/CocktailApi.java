@@ -206,8 +206,8 @@ public class CocktailApi {
             conn.setRequestMethod("PUT");
             conn.setRequestProperty("Content-Type", "application/json");
             //request header set
-            conn.setRequestProperty("user-id", "1");
-            conn.setRequestProperty("user-role", "ADMIN");
+            conn.setRequestProperty("user-id", "3");
+            conn.setRequestProperty("user-role", "SYSTEM");
 
             conn.setDoOutput(true);
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
