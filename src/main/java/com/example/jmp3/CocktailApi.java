@@ -121,7 +121,7 @@ public class CocktailApi {
             conn.setRequestProperty("user-id", "1");
             conn.setRequestProperty("user-role", "ADMIN");
 
-            conn.setRequestProperty("Content-type", "application/json");
+            conn.setRequestProperty("Content-Type", "application/json;utf-8");
             conn.setRequestProperty("Accept", "application/json"); //api 리턴값을 json으로 받을 경우
             conn.setDoOutput(true);
 
