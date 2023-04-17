@@ -118,6 +118,10 @@ public class CocktailApi {
 
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
+            //request header set
+            conn.setRequestProperty("user-id", "1");
+            conn.setRequestProperty("user-role", "ADMIN");
+
             conn.setRequestProperty("Content-type", "application/json");
             conn.setRequestProperty("Accept", "application/json"); //api 리턴값을 json으로 받을 경우
             conn.setDoOutput(true);
