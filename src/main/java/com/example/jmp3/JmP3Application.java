@@ -16,6 +16,6 @@ public class JmP3Application {
 
     public static void main(String[] args) {
         CocktailApi api = new CocktailApi();
-        api.addAccountUsers("조세호", "jshsh", "사용자", "경영지원실", "Y");
+        api.addAccountUsers("조세호", "jshsh", "사용자", "경영지원실");
     }
 }
