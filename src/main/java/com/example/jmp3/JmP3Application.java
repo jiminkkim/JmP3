@@ -19,7 +19,7 @@ public class JmP3Application {
     }
     public static void getAccountSeq() {
         try {
-            URL url = new URL("http://127.0.0.1:8080/api/cluster/v2/conditions"); //URL 객체 생성
+            URL url = new URL("http://101.55.69.54:30000/api/cluster/v2/conditions"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
