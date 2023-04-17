@@ -112,7 +112,6 @@ public class CocktailApi {
             body.put("userId", id);
             body.put("userRole", role);
             body.put("userJob", job);
-            body.put("inactiveYn", Yn);
 
             HttpURLConnection conn = null;
 
