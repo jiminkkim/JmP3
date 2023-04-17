@@ -47,7 +47,7 @@ public class JmP3Application {
             //버퍼에 있는 정보 확인
             while ((line = bf.readLine()) != null) {
                 result = result.concat(line);
-                //System.out.println(result); //받아온 데이터 확인
+                System.out.println(result); //받아온 데이터 확인
             }
 
             //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
