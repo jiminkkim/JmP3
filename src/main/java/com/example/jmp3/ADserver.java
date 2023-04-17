@@ -36,7 +36,9 @@ public class ADserver {
 
             for (int i = 0; i < temp.size(); i++) {
                 JSONObject jsonObj = (JSONObject) temp.get(i);
-                System.out.println(jsonObj.get("firstName"));
+                JSONObject attributes = (JSONObject) jsonObj.get("attributes");
+                JSONArray jsonArray = (JSONArray) attributes.get("LDAP_ENTRY_DN");
+                System.out.println(jsonArray);
             }
             //여기까지
             bf.close();
