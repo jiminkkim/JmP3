@@ -114,7 +114,7 @@ public class CocktailApi {
         con.setRequestProperty("Content-Type", "application/json;utf-8");
         con.setRequestProperty("Accept", "application/json");
         con.setDoOutput(true);
-        String jsonInputString = "{userName: 조세호, userId: 2223333, roles: 사용자, userJob: 개발실}";
+        String jsonInputString = "{ \"userName\": \"조세호\", \"userId\": \"223333\", \"roles\": \"[DEVOPS]\", \"userDepartment\": \"개발3실\"}";
 
         try(OutputStream os = con.getOutputStream()) {
             byte[] input = jsonInputString.getBytes("utf-8");
