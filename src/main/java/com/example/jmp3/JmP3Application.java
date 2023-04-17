@@ -6,6 +6,7 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -14,8 +15,8 @@ import java.net.URL;
 @SpringBootApplication
 public class JmP3Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         CocktailApi api = new CocktailApi();
-        api.addAccountUsers("조세호", "jshsh", "사용자", "경영지원실");
+        api.addAccountUsers();
     }
 }
