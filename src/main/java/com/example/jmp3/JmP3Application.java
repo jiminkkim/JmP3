@@ -19,7 +19,7 @@ public class JmP3Application {
     }
     public static void getAccountSeq() {
         try {
-            URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
+            URL url = new URL("http://api-server:8080/api/account/1/users"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -51,14 +51,14 @@ public class JmP3Application {
             }
 
             //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
-            JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject) parser.parse(result);
-            JSONArray parse_result = (JSONArray) obj.get("result");
+//             JSONParser parser = new JSONParser();
+//             JSONObject obj = (JSONObject) parser.parse(result);
+//             JSONArray parse_result = (JSONArray) obj.get("result");
 
-            for (int i = 0; i < parse_result.size(); i++) {
-                JSONObject jsonObj = (JSONObject) parse_result.get(i);
-                System.out.println(jsonObj);
-            }
+//             for (int i = 0; i < parse_result.size(); i++) {
+//                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
+//                 System.out.println(jsonObj);
+//             }
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
