@@ -190,14 +190,9 @@ public class CocktailApi {
     public void modifyUserInactive() {
         JSONObject data = new JSONObject();
 
-        ArrayList rolearr = new ArrayList();
-        rolearr.add("DEVOPS");
 
-        data.put("userName", "조세호");
-        data.put("userId", 223333);
-        data.put("roles", rolearr);
-        data.put("userDepartment", "개발1실");
         data.put("inactiveYn", "Y");
+        data.put("userSeq", 136);
 
         System.out.println(data);
 
