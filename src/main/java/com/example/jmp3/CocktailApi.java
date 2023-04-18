@@ -107,43 +107,42 @@ public class CocktailApi {
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
 
-        JSONObject data = new JSONObject();
+        if (userDepartment == "사업본부") {
+            JSONObject data = new JSONObject();
+            ArrayList rolearr = new ArrayList();
+            rolearr.add("DEVOPS");
 
-        ArrayList rolearr = new ArrayList();
-        rolearr.add("DEVOPS");
+            data.put("userName", userName);
+            data.put("userId", userId);
+            data.put("roles", rolearr);
+            data.put("userDepartment", userDepartment);
 
-        data.put("userName", userName);
-        data.put("userId", userId);
-        data.put("roles", rolearr);
-        data.put("userDepartment", userDepartment);
+            try {
+                String host_url = "http://api-server:8080/api/account/1/user";
+                HttpURLConnection conn = null;
 
-        System.out.println(data);
+                URL url = new URL(host_url);
+                conn = (HttpURLConnection) url.openConnection();
 
-        try {
-            String host_url = "http://api-server:8080/api/account/1/user";
-            HttpURLConnection conn = null;
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                //request header set
+                conn.setRequestProperty("user-id", "1");
+                conn.setRequestProperty("user-role", "ADMIN");
 
-            URL url = new URL(host_url);
-            conn = (HttpURLConnection) url.openConnection();
+                conn.setDoOutput(true);
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            //request header set
-            conn.setRequestProperty("user-id", "1");
-            conn.setRequestProperty("user-role", "ADMIN");
+                bw.write(data.toString());
+                bw.flush();
+                bw.close();
 
-            conn.setDoOutput(true);
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String returnMsg = in.readLine();
+                System.out.println("응답 메시지: " + returnMsg);
+            } catch (IOException ie) {
 
-            bw.write(data.toString());
-            bw.flush();
-            bw.close();
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String returnMsg = in.readLine();
-            System.out.println("응답 메시지: " + returnMsg);
-        } catch (IOException ie) {
-
+            }
         }
     }
 
