@@ -152,8 +152,9 @@ public class CocktailApi {
                 String seq = result_seq.toString();
                 Integer userSeq = Integer.parseInt(seq);
 
-                CocktailApi api = new CocktailApi();
-                api.modifyUserInactive(userSeq);
+                System.out.println(userSeq);
+//                CocktailApi api = new CocktailApi();
+//                api.modifyUserInactive(userSeq);
 
             } catch (IOException ie) {
             }
