@@ -10,6 +10,10 @@ import java.net.URL;
 
 public class ADserver {
     public void getUserAD() {
+        String userId = null;
+        String userName = null;
+        String userDepartment = null;
+
         try {
             URL url = new URL("http://101.55.69.58:30001/users"); //URL 객체 생성
             BufferedReader bf;
@@ -36,9 +40,21 @@ public class ADserver {
 
             for (int i = 0; i < temp.size(); i++) {
                 JSONObject jsonObj = (JSONObject) temp.get(i);
+
                 JSONObject attributes = (JSONObject) jsonObj.get("attributes");
                 JSONArray jsonArray = (JSONArray) attributes.get("LDAP_ENTRY_DN");
-                System.out.println(jsonArray);
+//                System.out.println(jsonArray.get(0));
+                String str = jsonArray.get(0).toString();
+                String[] array = str.split(","); //CN=1110000,OU=경영지원실,---
+                String dpt = array[1]; //OU=경영지원실
+                String[] dpt_array = dpt.split("="); // 경영지원실
+
+                userId = jsonObj.get("username").toString(); // userId 1110000
+                userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // userName 고하은
+                userDepartment = dpt_array[1]; // userDepartment 경영지원실
+
+                CocktailApi api = new CocktailApi();
+                api.addAccountUsers(userId, userName, userDepartment);
             }
             //여기까지
             bf.close();

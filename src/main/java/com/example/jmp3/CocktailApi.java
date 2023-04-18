@@ -105,17 +105,17 @@ public class CocktailApi {
             System.out.println(e.getMessage());
         }
     }
-    public void addAccountUsers(){
+    public void addAccountUsers(String userId, String userName, String userDepartment){
 
         JSONObject data = new JSONObject();
 
         ArrayList rolearr = new ArrayList();
         rolearr.add("DEVOPS");
 
-        data.put("userName", "조세호");
-        data.put("userId", 223333);
+        data.put("userName", userName);
+        data.put("userId", userId);
         data.put("roles", rolearr);
-        data.put("userDepartment", "개발3실");
+        data.put("userDepartment", userDepartment);
 
         System.out.println(data);
 
