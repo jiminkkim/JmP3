@@ -3,6 +3,7 @@ package com.example.jmp3;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -106,7 +107,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals("경영지원실")) { //사업본부 부서 소속인 사용자만 추가
+        if (userDepartment.equals("전략기획실")) { //사업본부 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");
@@ -115,7 +116,6 @@ public class CocktailApi {
             data.put("userId", userId);
             data.put("roles", rolearr);
             data.put("userDepartment", userDepartment);
-            data.put("inactiveYn", "Y");
 
             try {
                 String host_url = "http://api-server:8080/api/account/1/user";
@@ -137,11 +137,28 @@ public class CocktailApi {
                 bw.flush();
                 bw.close();
 
+                String result = "";
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String returnMsg = in.readLine();
-                System.out.println("응답 메시지: " + returnMsg);
-            } catch (IOException ie) {
+                result = result.concat(returnMsg);
+                System.out.println("응답 메시지: " + returnMsg); //받아온 데이터를 확인해 봄
 
+                //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
+                Object obj = null;
+                JSONParser parser = new JSONParser();
+                obj = parser.parse(result);
+                JSONArray temp = (JSONArray) obj;
+                JSONObject jsonObj = (JSONObject) temp.get(0);
+                JSONObject userseq = (JSONObject) jsonObj.get("userSeq");
+                String seq = userseq.toString();
+                Integer userSeq = Integer.parseInt(seq);
+
+                CocktailApi api = new CocktailApi();
+                api.modifyUserInactive(userSeq);
+
+            } catch (IOException ie) {
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
             }
         }
     }
@@ -186,12 +203,12 @@ public class CocktailApi {
 
         }
     }
-    public void modifyUserInactive() {
+    public void modifyUserInactive(Integer userseq) {
         JSONObject data = new JSONObject();
 
 
         data.put("inactiveYn", "Y");
-        data.put("userSeq", 136);
+        data.put("userSeq", userseq);
 
         System.out.println(data);
 
