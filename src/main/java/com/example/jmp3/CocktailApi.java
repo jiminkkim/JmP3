@@ -107,7 +107,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals("회의실")) { //사업본부 부서 소속인 사용자만 추가
+        if (userDepartment.equals("대회의실")) { //사업본부 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");
@@ -204,14 +204,13 @@ public class CocktailApi {
     public void modifyUserInactive(Integer userseq) {
         JSONObject data = new JSONObject();
 
-
         data.put("inactiveYn", "Y");
         data.put("userSeq", userseq);
 
         System.out.println(data);
 
         try {
-            String host_url = "http://api-server:8080/api/account/1/user/136/inactive";
+            String host_url = "http://api-server:8080/api/account/1/user/"+ userseq + "/inactive";
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
