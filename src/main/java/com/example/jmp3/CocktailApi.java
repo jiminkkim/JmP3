@@ -148,7 +148,7 @@ public class CocktailApi {
                 JSONObject obj = (JSONObject) parser.parse(result);
 
                 JSONObject parse_result = (JSONObject) obj.get("result");
-                JSONObject result_seq = (JSONObject) obj.get("userSeq");
+                JSONObject result_seq = (JSONObject) parse_result.get("userSeq");
                 String seq = result_seq.toString();
                 Integer userSeq = Integer.parseInt(seq);
 
