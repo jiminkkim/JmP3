@@ -107,7 +107,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals("전략기획실")) { //사업본부 부서 소속인 사용자만 추가
+        if (userDepartment.equals("회의실")) { //사업본부 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");
@@ -144,19 +144,19 @@ public class CocktailApi {
                 System.out.println("응답 메시지: " + returnMsg); //받아온 데이터를 확인해 봄
 
                 //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
-//                Object obj = null;
-//                JSONParser parser = new JSONParser();
-//                obj = parser.parse(result);
-//                JSONArray temp = (JSONArray) obj;
-//                JSONObject jsonObj = (JSONObject) temp.get(0);
-//                JSONObject userseq = (JSONObject) jsonObj.get("userSeq");
-//                String seq = userseq.toString();
-//                Integer userSeq = Integer.parseInt(seq);
-//
-//                CocktailApi api = new CocktailApi();
-//                api.modifyUserInactive(userSeq);
+                JSONParser parser = new JSONParser();
+                JSONObject obj = (JSONObject) parser.parse(result);
+
+                JSONObject parse_result = (JSONObject) obj.get("userSeq");
+                String seq = parse_result.toString();
+                Integer userSeq = Integer.parseInt(seq);
+
+                CocktailApi api = new CocktailApi();
+                api.modifyUserInactive(userSeq);
 
             } catch (IOException ie) {
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
             }
         }
     }
