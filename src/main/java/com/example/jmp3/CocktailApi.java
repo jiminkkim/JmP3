@@ -106,7 +106,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals("사업본부")) { //사업본부 부서 소속인 사용자만 추가
+        if (userDepartment.equals("경영지원실")) { //사업본부 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");
