@@ -144,21 +144,22 @@ public class CocktailApi {
                 System.out.println("응답 메시지: " + returnMsg); //받아온 데이터를 확인해 봄
 
                 //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
-//                JSONParser parser = new JSONParser();
-//                JSONObject obj = (JSONObject) parser.parse(result);
-//
-//                JSONObject parse_result = (JSONObject) obj.get("userSeq");
-//                String seq = parse_result.toString();
-//                Integer userSeq = Integer.parseInt(seq);
-//
-//                CocktailApi api = new CocktailApi();
-//                api.modifyUserInactive(userSeq);
+                JSONParser parser = new JSONParser();
+                JSONObject obj = (JSONObject) parser.parse(result);
+
+                JSONObject parse_result = (JSONObject) obj.get("result");
+                JSONObject result_seq = (JSONObject) obj.get("userSeq");
+                String seq = result_seq.toString();
+                Integer userSeq = Integer.parseInt(seq);
+
+                CocktailApi api = new CocktailApi();
+                api.modifyUserInactive(userSeq);
 
             } catch (IOException ie) {
             }
-//            catch (ParseException e) {
-//                throw new RuntimeException(e);
-//            }
+            catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
