@@ -115,6 +115,7 @@ public class CocktailApi {
             data.put("userId", userId);
             data.put("roles", rolearr);
             data.put("userDepartment", userDepartment);
+            data.put("inactiveYn", "Y");
 
             try {
                 String host_url = "http://api-server:8080/api/account/1/user";
