@@ -137,29 +137,39 @@ public class CocktailApi {
                 bw.flush();
                 bw.close();
 
+                //response
+                InputStream is = conn.getInputStream();
+                BufferedReader bf = new BufferedReader(new InputStreamReader(is));
+
+                String line = "";
                 String result = "";
-                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String returnMsg = in.readLine();
-                result = result.concat(returnMsg);
-                System.out.println("응답 메시지: " + result); //받아온 데이터를 확인해 봄
+                //버퍼에 있는 정보 확인
+                while ((line = bf.readLine()) != null) {
+                    result = result.concat(line);
+                    System.out.println(result); //받아온 데이터 확인
+                }
+//                String result = "";
+//                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+//                String returnMsg = in.readLine();
+//                result = result.concat(returnMsg);
+//                System.out.println("응답 메시지: " + result); //받아온 데이터를 확인해 봄
 
                 //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
 
-                JSONParser parser = new JSONParser();
-                JSONObject obj = (JSONObject) parser.parse(result);
-                JSONObject parse_result = (JSONObject) obj.get("result");
-                JSONObject jsonObj = (JSONObject) parse_result.get("userSeq");
-
-                String seq = jsonObj.toString();
-                Integer userSeq = Integer.parseInt(seq);
-
-                System.out.println(userSeq);
+//                Object obj = null;
+//                JSONParser parser = new JSONParser();
+//                obj = parser.parse(result);
+//
+//                JSONObject jsonObj = (JSONObject) obj.get("result");
+//
+//                String seq = jsonObj.toString();
+//                Integer userSeq = Integer.parseInt(seq);
+//
+//                System.out.println(userSeq);
 //                CocktailApi api = new CocktailApi();
 //                api.modifyUserInactive(userSeq);
 
             } catch (IOException ie) {
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
             }
         }
     }
