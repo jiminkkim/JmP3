@@ -148,6 +148,14 @@ public class CocktailApi {
                     result = result.concat(line);
                     System.out.println(result); //받아온 데이터 확인
                 }
+
+                //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
+                JSONParser parser = new JSONParser();
+                JSONObject obj = (JSONObject) parser.parse(result);
+                JSONObject parse_result = (JSONObject) obj.get("result");
+                JSONObject parse_userSeq = (JSONObject) parse_result.get("userSeq");
+
+                System.out.println(parse_userSeq);
 //                String result = "";
 //                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 //                String returnMsg = in.readLine();
@@ -168,8 +176,11 @@ public class CocktailApi {
 //                System.out.println(userSeq);
 //                CocktailApi api = new CocktailApi();
 //                api.modifyUserInactive(userSeq);
-
+                  bf.close();
             } catch (IOException ie) {
+                System.out.println(ie.getMessage());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
             }
         }
     }
