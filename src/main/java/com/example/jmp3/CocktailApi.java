@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @Component
 public class CocktailApi {
-    @Value("${user.department}")
+    @Value("${department}")
     private String department;
     public void getAccountSeq() {
         try {
