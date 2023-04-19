@@ -154,11 +154,17 @@ public class CocktailApi {
                 JSONObject jsonObj = null;
                 JSONParser jsonParser = new JSONParser();
 
-                obj = jsonParser.parse(result);
-                jsonObj = (JSONObject) obj;
+                obj = jsonParser.parse(result); //JSONParser를 통해 Object로 바꾸고
+                jsonObj = (JSONObject) obj; // 이 Object를 다시 JSONObject로 캐스팅함
 
-                Object parse_userSeq = jsonObj.get("result");
-                System.out.println(parse_userSeq);
+                Object parse_result = jsonObj.get("result");
+
+                JSONObject json_result = null;
+                json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
+                Object result_userSeq = json_result.get("userSeq");
+
+                System.out.println(result_userSeq);
+
 //                String result = "";
 //                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 //                String returnMsg = in.readLine();
