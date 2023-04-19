@@ -54,14 +54,8 @@ public class ADserver {
                 userDepartment = dpt_array[1]; // userDepartment 경영지원실
 
                 // Cocktail 사용자 조회해서 비교
-//                CocktailApi api = new CocktailApi();
-//                boolean addUser = api.getAccountUsers(userId);
-//                if (addUser) {
-//                    api.addAccountUsers(userId, userName, userDepartment);
-//                } else {
-//                    System.out.println("오류임");
-////                    api.modifyAccountUsers(userId, userName, userDepartment);
-//                }
+                CocktailApi api = new CocktailApi();
+                api.getAccountUsers(userId, userName, userDepartment);
             }
             //여기까지
             bf.close();

@@ -59,8 +59,7 @@ public class CocktailApi {
             System.out.println(e.getMessage());
         }
     }
-    public boolean getAccountUsers() {
-        boolean addUser = true;
+    public void getAccountUsers(String userId, String userName, String userDepartment) {
         try {
             URL url = new URL("http://api-server:8080/api/account/1/users"); //URL 객체 생성
 
@@ -98,21 +97,28 @@ public class CocktailApi {
             JSONObject obj = (JSONObject) parser.parse(result);
             JSONArray parse_result = (JSONArray) obj.get("result");
 
-            for (int i = 0; i < parse_result.size(); i++) {
+            boolean addUser = true;
+            for (int i = 0; i < parse_result.size(); i++) { //넘어온 userId가 칵테일 유저 목록 중에 있는지 반복문 돌려서 확인
                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
-                System.out.println(obj_userId);
-                //AD userId랑 비교
-//                if (obj_userId.equals(userId)) {
-//                    addUser = false;
-//                }
-//                System.out.println(obj_userId); // 1110000, 1110001, 1110002, ...
+//                System.out.println(obj_userId); (0)
+                if (obj_userId.equals(userId)) {
+                    addUser = false; //사용자 수정
+                } else addUser = true; //사용자 추가
             }
+            System.out.println(addUser);
+            //AD userId랑 비교
+//            if (addUser) {
+//                CocktailApi api = new CocktailApi();
+//                api.addAccountUsers(userId, userName, userDepartment);
+//            } else {
+//                CocktailApi api = new CocktailApi();
+//                api.modifyAccountUsers(userId, userName, userDepartment);
+//            }
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return addUser;
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
         if (userDepartment.equals("개발1실") || userDepartment.equals("개발2실") || userDepartment.equals("개발3실")) { //개발0실 부서 소속인 사용자만 추가
