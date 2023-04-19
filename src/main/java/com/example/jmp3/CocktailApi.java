@@ -106,13 +106,15 @@ public class CocktailApi {
                     addUser = false; //사용자 수정
                 } else addUser = true; //사용자 추가
             }
-            //AD userId랑 비교
-            CocktailApi api = new CocktailApi();
-            if (addUser) {
-                api.addAccountUsers(userId, userName, userDepartment);
-            } else {
-                System.out.println("수정 함수 호출");
+            if (userDepartment.equals("개발1실") || userDepartment.equals("개발2실") || userDepartment.equals("개발3실")) {
+                //AD userId랑 비교
+                CocktailApi api = new CocktailApi();
+                if (addUser) {
+                    api.addAccountUsers(userId, userName, userDepartment);
+                } else {
+                    System.out.println("수정 함수 호출");
 //                api.modifyAccountUsers(userId, userName, userDepartment);
+                }
             }
             bf.close();
         } catch (Exception e) {
