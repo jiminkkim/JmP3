@@ -15,7 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class CocktailApi {
-    @Value("${department}")
+    @Value("${user.department}")
     private String department;
     public void getAccountSeq() {
         try {
