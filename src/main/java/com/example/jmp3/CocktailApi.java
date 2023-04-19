@@ -136,6 +136,7 @@ public class CocktailApi {
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
         String department = prop.getDepartment();
+        System.out.println(department);
         if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
