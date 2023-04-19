@@ -160,11 +160,9 @@ public class CocktailApi {
 
                 JSONObject json_result = null;
                 json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
-                Object result_userSeq = json_result.get("userSeq");
+                String result_userSeq = json_result.get("userSeq").toString();
 
-                Integer userSeq = (Integer) result_userSeq;
-
-                System.out.println(userSeq);
+                System.out.println(result_userSeq);
 //                CocktailApi api = new CocktailApi();
 //                api.modifyUserInactive(userSeq);
                   bf.close();
