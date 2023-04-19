@@ -161,11 +161,12 @@ public class CocktailApi {
                 JSONObject json_result = null;
                 json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
                 String result_userSeq = json_result.get("userSeq").toString();
+                Integer userSeq = Integer.parseInt(result_userSeq);
 
-                System.out.println(result_userSeq);
-//                CocktailApi api = new CocktailApi();
-//                api.modifyUserInactive(userSeq);
-                  bf.close();
+                CocktailApi api = new CocktailApi();
+                api.modifyUserInactive(userSeq);
+
+                bf.close();
             } catch (IOException ie) {
                 System.out.println(ie.getMessage());
             } catch (ParseException e) {
