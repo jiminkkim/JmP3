@@ -112,8 +112,7 @@ public class CocktailApi {
                 CocktailApi api = new CocktailApi();
                 api.addAccountUsers(userId, userName, userDepartment);
             } else {
-                CocktailApi api = new CocktailApi();
-                api.modifyAccountUsers(userId, userName, userDepartment);
+                System.out.println("수정해야함");
             }
             bf.close();
         } catch (Exception e) {
