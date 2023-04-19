@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.PropertySource;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,12 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 @SpringBootApplication
+@PropertySource("classpath:/application.properties")
 public class JmP3Application {
 
     public static void main(String[] args) throws IOException {
         ADserver ad = new ADserver();
         ad.getUserAD();
-//        CocktailApi api = new CocktailApi();
-//        api.getAccountUsers();
     }
 }

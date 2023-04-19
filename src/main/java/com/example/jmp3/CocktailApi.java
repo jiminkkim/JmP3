@@ -4,13 +4,18 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+@Component
 public class CocktailApi {
+    @Value("${user.department}")
+    private String department;
     public void getAccountSeq() {
         try {
             URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
@@ -126,7 +131,8 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals("개발1실") || userDepartment.equals("개발2실") || userDepartment.equals("개발3실")) { //개발0실 부서 소속인 사용자만 추가
+
+        if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");
