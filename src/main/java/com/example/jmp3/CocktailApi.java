@@ -98,9 +98,12 @@ public class CocktailApi {
             JSONArray parse_result = (JSONArray) obj.get("result");
 
             boolean addUser = true;
+            Integer userSeq = null;
             for (int i = 0; i < parse_result.size(); i++) { //넘어온 userId가 칵테일 유저 목록 중에 있는지 반복문 돌려서 확인
                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
+                String obj_userSeq = jsonObj.get("userSeq").toString(); //ex)136
+                userSeq = Integer.parseInt(obj_userSeq);
 //                System.out.println(obj_userId); (0)
                 if (obj_userId.equals(userId)) { //칵테일 플랫폼에 있는 유저인지
                     addUser = false; //사용자 수정
@@ -112,7 +115,7 @@ public class CocktailApi {
             if (addUser) {
                 api.addAccountUsers(userId, userName, userDepartment);
             } else {
-                api.modifyAccountUsers(userId, userName, userDepartment);
+                api.modifyAccountUsers(userId, userName, userDepartment, userSeq);
             }
 
             bf.close();
@@ -189,7 +192,7 @@ public class CocktailApi {
         }
     }
 
-    public void modifyAccountUsers(String userId, String userName, String userDepartment) {
+    public void modifyAccountUsers(String userId, String userName, String userDepartment, Integer userSeq) {
         // 사용자 부서가 변경된 경우, 비활성 사용자로 변경하고 부서명은 AD서버 것으로 업데이트 한다.
         JSONObject data = new JSONObject();
 
@@ -204,7 +207,7 @@ public class CocktailApi {
         System.out.println(data);
 
         try {
-            String host_url = "http://api-server:8080/api/account/1/user/136";
+            String host_url = "http://api-server:8080/api/account/1/user/" + userSeq;
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
@@ -225,7 +228,10 @@ public class CocktailApi {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String returnMsg = in.readLine();
-            System.out.println("응답 메시지 수정메시지: " + returnMsg);
+//            System.out.println("응답 메시지 수정메시지: " + returnMsg);
+            CocktailApi api = new CocktailApi();
+            api.modifyUserInactive(userSeq);
+
         } catch (IOException ie) {
 
         }
