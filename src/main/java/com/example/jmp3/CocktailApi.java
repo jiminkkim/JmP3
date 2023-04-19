@@ -150,11 +150,14 @@ public class CocktailApi {
                 }
 
                 //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
-                JSONParser parser = new JSONParser();
-                JSONObject obj = (JSONObject) parser.parse(result);
-                JSONObject parse_result = (JSONObject) obj.get("result");
-                JSONObject parse_userSeq = (JSONObject) parse_result.get("userSeq");
+                Object obj = null;
+                JSONObject jsonObj = null;
+                JSONParser jsonParser = new JSONParser();
 
+                obj = jsonParser.parse(result);
+                jsonObj = (JSONObject) obj;
+
+                Object parse_userSeq = jsonObj.get("result");
                 System.out.println(parse_userSeq);
 //                String result = "";
 //                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
