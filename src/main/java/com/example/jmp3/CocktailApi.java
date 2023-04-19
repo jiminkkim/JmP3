@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class CocktailApi {
     @Value("${user.department}")
-    private String department;
+    public String department;
     public void getAccountSeq() {
         try {
             URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
