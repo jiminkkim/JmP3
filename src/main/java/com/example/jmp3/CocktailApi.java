@@ -104,6 +104,7 @@ public class CocktailApi {
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
                 String obj_userSeq = jsonObj.get("userSeq").toString(); //ex)136
                 userSeq = Integer.parseInt(obj_userSeq);
+                System.out.println(userSeq);
 //                System.out.println(obj_userId); (0)
                 if (obj_userId.equals(userId)) { //칵테일 플랫폼에 있는 유저인지
                     addUser = false; //사용자 수정
@@ -111,12 +112,12 @@ public class CocktailApi {
             }
 
             //AD userId랑 비교
-            CocktailApi api = new CocktailApi();
-            if (addUser) {
-                api.addAccountUsers(userId, userName, userDepartment);
-            } else {
-                api.modifyAccountUsers(userId, userName, userDepartment, userSeq);
-            }
+//            CocktailApi api = new CocktailApi();
+//            if (addUser) {
+//                api.addAccountUsers(userId, userName, userDepartment);
+//            } else {
+//                api.modifyAccountUsers(userId, userName, userDepartment, userSeq);
+//            }
 
             bf.close();
         } catch (Exception e) {
@@ -204,7 +205,7 @@ public class CocktailApi {
         data.put("roles", rolearr);
         data.put("userDepartment", userDepartment);
 
-        System.out.println(data);
+//        System.out.println(data);
 
         try {
             String host_url = "http://api-server:8080/api/account/1/user/" + userSeq;
