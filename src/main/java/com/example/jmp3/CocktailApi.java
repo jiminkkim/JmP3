@@ -103,8 +103,8 @@ public class CocktailApi {
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
 //                System.out.println(obj_userId); (0)
                 if (obj_userId.equals(userId)) {
-                    addUser = false; //사용자 수정
-                } else addUser = true; //사용자 추가
+                    addUser = true; //사용자 수정
+                } else addUser = false; //사용자 추가
             }
             System.out.println(addUser);
             //AD userId랑 비교
