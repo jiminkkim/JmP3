@@ -53,8 +53,14 @@ public class ADserver {
                 userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // userName 고하은
                 userDepartment = dpt_array[1]; // userDepartment 경영지원실
 
+                // Cocktail 사용자 조회해서 비교
                 CocktailApi api = new CocktailApi();
-                api.addAccountUsers(userId, userName, userDepartment);
+                boolean addUser = api.getAccountUsers(userId);
+                if (addUser) {
+                    api.addAccountUsers(userId, userName, userDepartment);
+                } else {
+                    api.modifyAccountUsers(userId, userName, userDepartment);
+                }
             }
             //여기까지
             bf.close();
