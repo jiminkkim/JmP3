@@ -102,20 +102,19 @@ public class CocktailApi {
                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
 //                System.out.println(obj_userId); (0)
-                if (obj_userId.equals(userId)) {
+                if (obj_userId.equals(userId)) { //칵테일 플랫폼에 있는 유저인지
                     addUser = false; //사용자 수정
                 } else addUser = true; //사용자 추가
             }
-            if (userDepartment.equals("개발1실") || userDepartment.equals("개발2실") || userDepartment.equals("개발3실")) {
-                //AD userId랑 비교
-                CocktailApi api = new CocktailApi();
-                if (addUser) {
-                    api.addAccountUsers(userId, userName, userDepartment);
-                } else {
-                    System.out.println("수정 함수 호출");
-//                api.modifyAccountUsers(userId, userName, userDepartment);
-                }
+
+            //AD userId랑 비교
+            CocktailApi api = new CocktailApi();
+            if (addUser) {
+                api.addAccountUsers(userId, userName, userDepartment);
+            } else {
+                api.modifyAccountUsers(userId, userName, userDepartment);
             }
+
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
