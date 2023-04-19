@@ -103,18 +103,18 @@ public class CocktailApi {
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
 //                System.out.println(obj_userId); (0)
                 if (obj_userId.equals(userId)) {
-                    addUser = true; //사용자 수정
-                } else addUser = false; //사용자 추가
+                    addUser = false; //사용자 수정
+                } else addUser = true; //사용자 추가
             }
-            System.out.println(addUser);
+
             //AD userId랑 비교
-//            if (addUser) {
-//                CocktailApi api = new CocktailApi();
-//                api.addAccountUsers(userId, userName, userDepartment);
-//            } else {
-//                CocktailApi api = new CocktailApi();
-//                api.modifyAccountUsers(userId, userName, userDepartment);
-//            }
+            if (addUser) {
+                CocktailApi api = new CocktailApi();
+                api.addAccountUsers(userId, userName, userDepartment);
+            } else {
+                CocktailApi api = new CocktailApi();
+                api.modifyAccountUsers(userId, userName, userDepartment);
+            }
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -225,7 +225,7 @@ public class CocktailApi {
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String returnMsg = in.readLine();
-            System.out.println("응답 메시지: " + returnMsg);
+            System.out.println("응답 메시지 수정메시지: " + returnMsg);
         } catch (IOException ie) {
 
         }
