@@ -59,7 +59,8 @@ public class ADserver {
                 if (addUser) {
                     api.addAccountUsers(userId, userName, userDepartment);
                 } else {
-                    api.modifyAccountUsers(userId, userName, userDepartment);
+                    System.out.println("오류임");
+//                    api.modifyAccountUsers(userId, userName, userDepartment);
                 }
             }
             //여기까지

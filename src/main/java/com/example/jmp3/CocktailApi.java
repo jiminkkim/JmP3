@@ -216,41 +216,11 @@ public class CocktailApi {
             bw.flush();
             bw.close();
 
-//            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//            String returnMsg = in.readLine();
-//            System.out.println("응답 메시지: " + returnMsg);
-            //response
-            InputStream is = conn.getInputStream();
-            BufferedReader bf = new BufferedReader(new InputStreamReader(is));
-
-            String line = "";
-            String result = "";
-            //버퍼에 있는 정보 확인
-            while ((line = bf.readLine()) != null) {
-                result = result.concat(line);
-            }
-
-            //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
-            Object obj = null;
-            JSONObject jsonObj = null;
-            JSONParser jsonParser = new JSONParser();
-
-            obj = jsonParser.parse(result); //JSONParser를 통해 Object로 바꾸고
-            jsonObj = (JSONObject) obj; // 이 Object를 다시 JSONObject로 캐스팅함
-
-            Object parse_result = jsonObj.get("result");
-
-            JSONObject json_result = null;
-            json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
-            String result_userSeq = json_result.get("userSeq").toString();
-            Integer userSeq = Integer.parseInt(result_userSeq);
-
-            CocktailApi api = new CocktailApi();
-            api.modifyUserInactive(userSeq);
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String returnMsg = in.readLine();
+            System.out.println("응답 메시지: " + returnMsg);
         } catch (IOException ie) {
 
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
         }
     }
     public void modifyUserInactive(Integer userseq) {
