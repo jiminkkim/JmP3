@@ -106,13 +106,13 @@ public class CocktailApi {
                     addUser = false; //사용자 수정
                 } else addUser = true; //사용자 추가
             }
-
             //AD userId랑 비교
+            CocktailApi api = new CocktailApi();
             if (addUser) {
-                CocktailApi api = new CocktailApi();
                 api.addAccountUsers(userId, userName, userDepartment);
             } else {
-                System.out.println("수정해야함");
+                System.out.println("수정 함수 호출");
+//                api.modifyAccountUsers(userId, userName, userDepartment);
             }
             bf.close();
         } catch (Exception e) {
