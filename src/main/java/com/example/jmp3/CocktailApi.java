@@ -162,28 +162,12 @@ public class CocktailApi {
                 json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
                 Object result_userSeq = json_result.get("userSeq");
 
-                System.out.println(result_userSeq);
+                String userseq = (String) result_userSeq;
 
-//                String result = "";
-//                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-//                String returnMsg = in.readLine();
-//                result = result.concat(returnMsg);
-//                System.out.println("응답 메시지: " + result); //받아온 데이터를 확인해 봄
+                Integer userSeq = Integer.parseInt(userseq);
 
-                //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
-
-//                Object obj = null;
-//                JSONParser parser = new JSONParser();
-//                obj = parser.parse(result);
-//
-//                JSONObject jsonObj = (JSONObject) obj.get("result");
-//
-//                String seq = jsonObj.toString();
-//                Integer userSeq = Integer.parseInt(seq);
-//
-//                System.out.println(userSeq);
-//                CocktailApi api = new CocktailApi();
-//                api.modifyUserInactive(userSeq);
+                CocktailApi api = new CocktailApi();
+                api.modifyUserInactive(userSeq);
                   bf.close();
             } catch (IOException ie) {
                 System.out.println(ie.getMessage());
