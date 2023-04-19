@@ -165,8 +165,8 @@ public class CocktailApi {
                 Integer userSeq = (Integer) result_userSeq;
 
                 System.out.println(userSeq);
-                CocktailApi api = new CocktailApi();
-                api.modifyUserInactive(userSeq);
+//                CocktailApi api = new CocktailApi();
+//                api.modifyUserInactive(userSeq);
                   bf.close();
             } catch (IOException ie) {
                 System.out.println(ie.getMessage());
