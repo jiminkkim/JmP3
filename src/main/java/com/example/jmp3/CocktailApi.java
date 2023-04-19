@@ -59,7 +59,7 @@ public class CocktailApi {
             System.out.println(e.getMessage());
         }
     }
-    public boolean getAccountUsers(String userId) {
+    public boolean getAccountUsers() {
         boolean addUser = true;
         try {
             URL url = new URL("http://api-server:8080/api/account/1/users"); //URL 객체 생성
@@ -101,10 +101,11 @@ public class CocktailApi {
             for (int i = 0; i < parse_result.size(); i++) {
                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
                 String obj_userId = jsonObj.get("userId").toString(); //ex) 1110000
+                System.out.println(obj_userId);
                 //AD userId랑 비교
-                if (obj_userId.equals(userId)) {
-                    addUser = false;
-                }
+//                if (obj_userId.equals(userId)) {
+//                    addUser = false;
+//                }
 //                System.out.println(obj_userId); // 1110000, 1110001, 1110002, ...
             }
             bf.close();

@@ -16,7 +16,9 @@ import java.net.URL;
 public class JmP3Application {
 
     public static void main(String[] args) throws IOException {
-        ADserver ad = new ADserver();
-        ad.getUserAD();
+//        ADserver ad = new ADserver();
+//        ad.getUserAD();
+        CocktailApi api = new CocktailApi();
+        api.getAccountUsers();
     }
 }
