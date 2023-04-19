@@ -1,5 +1,6 @@
 package com.example.jmp3;
 
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -16,8 +17,9 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class CocktailApi {
-    @Value("${user.department}")
-    public String department;
+    @Autowired
+    private MyProperties prop;
+
     public void getAccountSeq() {
         try {
             URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
@@ -133,7 +135,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        System.out.println(department);
+        String department = prop.getDepartment();
         if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
