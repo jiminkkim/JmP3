@@ -13,7 +13,7 @@ import java.net.URL;
 @Component
 public class ADserver {
 
-    public void getUserAD() {
+    public void getUserAD(String department) {
 
         String userId = null;
         String userName = null;
@@ -60,7 +60,7 @@ public class ADserver {
 
                 // Cocktail 사용자 조회해서 비교
                 CocktailApi api = new CocktailApi();
-                api.getAccountUsers(userId, userName, userDepartment);
+                api.getAccountUsers(userId, userName, userDepartment, department);
             }
             //여기까지
             bf.close();

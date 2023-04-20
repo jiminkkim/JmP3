@@ -66,7 +66,7 @@ public class CocktailApi {
             System.out.println(e.getMessage());
         }
     }
-    public void getAccountUsers(String userId, String userName, String userDepartment) {
+    public void getAccountUsers(String userId, String userName, String userDepartment, String department) {
         try {
             URL url = new URL("http://api-server:8080/api/account/1/users"); //URL 객체 생성
 
@@ -133,7 +133,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals("개발1실")) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
+        if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");

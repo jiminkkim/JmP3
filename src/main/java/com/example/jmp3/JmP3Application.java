@@ -23,6 +23,6 @@ public class JmP3Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        adserver.getUserAD();
+        adserver.getUserAD(department);
     }
 }
