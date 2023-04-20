@@ -14,10 +14,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class CocktailApi {
-
-    @Value("${user.department}")
-    private String department;
-
     public void getAccountSeq() {
         try {
             URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
@@ -123,7 +119,7 @@ public class CocktailApi {
             //AD userId랑 비교
             CocktailApi api = new CocktailApi();
             if (addUser) {
-                api.addAccountUsers(userId, userName, userDepartment);
+                api.addAccountUsers(userId, userName, userDepartment, department);
             } else {
                 api.modifyAccountUsers(userId, userName, userDepartment, userSeq);
             }
@@ -132,7 +128,7 @@ public class CocktailApi {
             System.out.println(e.getMessage());
         }
     }
-    public void addAccountUsers(String userId, String userName, String userDepartment){
+    public void addAccountUsers(String userId, String userName, String userDepartment, String department){
         if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
