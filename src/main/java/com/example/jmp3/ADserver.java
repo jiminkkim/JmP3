@@ -24,7 +24,7 @@ public class ADserver {
     @Autowired
     CocktailApi cocktailApi;
 
-    @Scheduled(cron = "0 0/5 * * * *")
+    @Scheduled(cron = "0 0 0 * * *")
     public void getUserAD() {
 
         String userId = null;
@@ -71,7 +71,7 @@ public class ADserver {
                 userDepartment = dpt_array[1]; // userDepartment 경영지원실
 
                 // Cocktail 사용자 조회
-                cocktailApi.getAccountUsers(userId, userName, userDepartment, department);
+                cocktailApi.getAccountSeq(userId, userName, userDepartment, department);
             }
             //여기까지
             bf.close();

@@ -12,10 +12,11 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CocktailApi {
-    public void getAccountSeq() {
+    public void getAccountSeq(String userId, String userName, String userDepartment, String department) {
         try {
             URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
 
@@ -45,7 +46,7 @@ public class CocktailApi {
             //버퍼에 있는 정보 확인
             while ((line = bf.readLine()) != null) {
                 result = result.concat(line);
-                //System.out.println(result); //받아온 데이터 확인
+                //System.out.println(result); //받아온 데이터 확인 accountSeq: 4
             }
 
             //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함
@@ -53,19 +54,29 @@ public class CocktailApi {
             JSONObject obj = (JSONObject) parser.parse(result);
             JSONArray parse_result = (JSONArray) obj.get("result");
 
+            List<Integer> seqList = new ArrayList<Integer>();
+
             for (int i = 0; i < parse_result.size(); i++) {
                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
-//                System.out.println(jsonObj);
-                System.out.println("clusterId: " + jsonObj.get("clusterId") + ", clusterSeq: " + jsonObj.get("clusterSeq") + ", accountSeq: " + jsonObj.get("accountSeq"));
+                String seq = jsonObj.get("accountSeq").toString();
+                Integer seq_num = Integer.parseInt(seq); //accountSeq: 4
+                if (seqList.indexOf(seq_num) < 0) { // accountSeq 중복 아니라면
+                    seqList.add(seq_num); //[4, 1] 배열에 추가하고
+                    CocktailApi api = new CocktailApi();
+                    api.getAccountUsers(userId, userName, userDepartment, department, seq_num);
+                } else { //값이 있으면
+                    System.out.println("중복 된 accountSeq 임.");
+                }
             }
+            seqList.clear();
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    public void getAccountUsers(String userId, String userName, String userDepartment, String department) {
+    public void getAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq) {
         try {
-            URL url = new URL("http://api-server:8080/api/account/1/users"); //URL 객체 생성
+            URL url = new URL("http://api-server:8080/api/account/" + accountSeq + "/users"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -120,16 +131,16 @@ public class CocktailApi {
             //AD userId랑 비교
             CocktailApi api = new CocktailApi();
             if (addUser) {
-                api.addAccountUsers(userId, userName, userDepartment, department);
+                api.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
             } else {
-                api.modifyAccountUsers(userId, userName, userDepartment, userSeq);
+                api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
             }
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
-    public void addAccountUsers(String userId, String userName, String userDepartment, String department){
+    public void addAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq){
         if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
@@ -141,7 +152,7 @@ public class CocktailApi {
             data.put("userDepartment", userDepartment);
 
             try {
-                String host_url = "http://api-server:8080/api/account/1/user";
+                String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user";
                 HttpURLConnection conn = null;
 
                 URL url = new URL(host_url);
@@ -187,7 +198,7 @@ public class CocktailApi {
                 Integer userSeq = Integer.parseInt(result_userSeq);
 
                 CocktailApi api = new CocktailApi();
-                api.modifyUserInactive(userSeq);
+                api.modifyUserInactive(userSeq, accountSeq);
 
                 bf.close();
             } catch (IOException ie) {
@@ -198,7 +209,7 @@ public class CocktailApi {
         }
     }
 
-    public void modifyAccountUsers(String userId, String userName, String userDepartment, Integer userSeq) {
+    public void modifyAccountUsers(String userId, String userName, String userDepartment, Integer userSeq, Integer accountSeq) {
         // 사용자 부서가 변경된 경우, 비활성 사용자로 변경하고 부서명은 AD서버 것으로 업데이트 한다.
         JSONObject data = new JSONObject();
 
@@ -213,7 +224,7 @@ public class CocktailApi {
 //        System.out.println(data);
 
         try {
-            String host_url = "http://api-server:8080/api/account/1/user/" + userSeq;
+            String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user/" + userSeq;
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
@@ -236,13 +247,13 @@ public class CocktailApi {
             String returnMsg = in.readLine();
 //            System.out.println("응답 메시지 수정메시지: " + returnMsg);
             CocktailApi api = new CocktailApi();
-            api.modifyUserInactive(userSeq);
+            api.modifyUserInactive(userSeq, accountSeq);
 
         } catch (IOException ie) {
 
         }
     }
-    public void modifyUserInactive(Integer userseq) {
+    public void modifyUserInactive(Integer userseq, Integer accountSeq) {
         JSONObject data = new JSONObject();
 
         data.put("inactiveYn", "Y");
@@ -251,7 +262,7 @@ public class CocktailApi {
         System.out.println(data);
 
         try {
-            String host_url = "http://api-server:8080/api/account/1/user/"+ userseq + "/inactive";
+            String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user/"+ userseq + "/inactive";
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
