@@ -4,6 +4,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -13,7 +14,13 @@ import java.net.URL;
 @Component
 public class ADserver {
 
-    public void getUserAD(String department) {
+    @Value("${user.department}")
+    private String department;
+
+    @Autowired
+    CocktailApi cocktailApi;
+
+    public void getUserAD() {
 
         String userId = null;
         String userName = null;
@@ -59,8 +66,10 @@ public class ADserver {
                 userDepartment = dpt_array[1]; // userDepartment 경영지원실
 
                 // Cocktail 사용자 조회해서 비교
-                CocktailApi api = new CocktailApi();
-                api.getAccountUsers(userId, userName, userDepartment, department);
+//                CocktailApi api = new CocktailApi();
+//                api.getAccountUsers(userId, userName, userDepartment, department);
+
+                cocktailApi.getAccountUsers(userId, userName, userDepartment, department);
             }
             //여기까지
             bf.close();

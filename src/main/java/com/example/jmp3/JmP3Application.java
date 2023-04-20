@@ -5,14 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.IOException;
-
 @SpringBootApplication
 public class JmP3Application implements CommandLineRunner {
-
-    @Value("${user.department}")
-    private String department;
+//
+//    @Value("${user.department}")
+//    private String department;
 
     @Autowired
     ADserver adserver;
@@ -23,6 +24,6 @@ public class JmP3Application implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        adserver.getUserAD(department);
+        adserver.getUserAD();
     }
 }

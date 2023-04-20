@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+@Component
 public class CocktailApi {
     public void getAccountSeq() {
         try {
