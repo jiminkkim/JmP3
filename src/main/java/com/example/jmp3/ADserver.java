@@ -5,21 +5,26 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+@EnableScheduling
+@Configuration
 @Component
 public class ADserver {
-
     @Value("${user.department}")
     private String department;
 
     @Autowired
     CocktailApi cocktailApi;
 
+    @Scheduled(cron = "0 0/5 * * * *")
     public void getUserAD() {
 
         String userId = null;
@@ -65,10 +70,7 @@ public class ADserver {
                 userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // userName 고하은
                 userDepartment = dpt_array[1]; // userDepartment 경영지원실
 
-                // Cocktail 사용자 조회해서 비교
-//                CocktailApi api = new CocktailApi();
-//                api.getAccountUsers(userId, userName, userDepartment, department);
-
+                // Cocktail 사용자 조회
                 cocktailApi.getAccountUsers(userId, userName, userDepartment, department);
             }
             //여기까지

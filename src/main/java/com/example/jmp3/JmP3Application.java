@@ -11,9 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import java.io.IOException;
 @SpringBootApplication
 public class JmP3Application implements CommandLineRunner {
-//
-//    @Value("${user.department}")
-//    private String department;
 
     @Autowired
     ADserver adserver;
