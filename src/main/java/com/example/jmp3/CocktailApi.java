@@ -59,7 +59,8 @@ public class CocktailApi {
             for (int i = 0; i < parse_result.size(); i++) {
                 Integer seq_num = null;
                 JSONObject jsonObj = (JSONObject) parse_result.get(i);
-                String seq = jsonObj.get("accountSeq").toString();
+                JSONObject jsonAccount = (JSONObject) jsonObj.get("account");
+                String seq = jsonAccount.get("accountSeq").toString();
                 seq_num = Integer.parseInt(seq); //accountSeq: 4
                 if (seqList.indexOf(seq_num) < 0) { // accountSeq 중복 아니라면
                     seqList.add(seq_num); //[4, 1] 배열에 추가하고
