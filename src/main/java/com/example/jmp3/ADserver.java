@@ -14,6 +14,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+/**
+ * @brief ADserver
+ * @section 작성정보
+ * - author: 개발3실
+ * - version: 1.0
+ * - since 2023.04.20.
+ * @section Class
+ * - Class: ADserver
+ * @section 수정정보
+ * - 수정일: 2023.04.20.
+ * - 수정자: 김지민
+ * - 수정내용: 최초생성
+ */
 @EnableScheduling
 @Configuration
 @Component
@@ -24,7 +37,7 @@ public class ADserver {
     @Autowired
     CocktailApi cocktailApi;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 반복 실행
     public void getUserAD() {
 
         String userId = null;
@@ -42,17 +55,14 @@ public class ADserver {
 
             //버퍼에 있는 정보를 하나의 문자열로 변환.
             while ((line = bf.readLine()) != null) {
-                result = result.concat(line);
-//                System.out.println(result); //받아온 데이터를 확인해봄
+                result = result.concat(line); // 받아온 데이터 결과 저장
             }
 
-            //JSON parser를 만들어 만들어진 문자열 데이터를 객체화 함.
+            //JSON parser를 만들어 만들어진 문자열 데이터를 객체화
             Object obj = null;
-//            JSONObject jsonObj = null;
             JSONParser parser = new JSONParser();
 
             obj = parser.parse(result);
-//            System.out.println(obj);
             JSONArray temp = (JSONArray) obj;
 
             for (int i = 0; i < temp.size(); i++) {
@@ -60,17 +70,16 @@ public class ADserver {
 
                 JSONObject attributes = (JSONObject) jsonObj.get("attributes");
                 JSONArray jsonArray = (JSONArray) attributes.get("LDAP_ENTRY_DN");
-//                System.out.println(jsonArray.get(0));
                 String str = jsonArray.get(0).toString();
-                String[] array = str.split(","); //CN=1110000,OU=경영지원실,---
-                String dpt = array[1]; //OU=경영지원실
-                String[] dpt_array = dpt.split("="); // 경영지원실
+                String[] array = str.split(","); // ex) CN=1110000,OU=개발1실,---
+                String dpt = array[1]; // ex) OU=개발1실
+                String[] dpt_array = dpt.split("="); // ex) 개발1실
 
-                userId = jsonObj.get("username").toString(); // userId 1110000
-                userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // userName 고하은
-                userDepartment = dpt_array[1]; // userDepartment 경영지원실
+                userId = jsonObj.get("username").toString(); // ex) 1110000
+                userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // ex) 고하은
+                userDepartment = dpt_array[1]; // ex) 개발1실
 
-                // Cocktail 사용자 조회
+                // Cocktail 클러스터 현황 목록 조회
                 cocktailApi.getAccountSeq(userId, userName, userDepartment, department);
             }
             //여기까지
