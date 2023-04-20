@@ -133,7 +133,7 @@ public class CocktailApi {
         }
     }
     public void addAccountUsers(String userId, String userName, String userDepartment){
-        if (userDepartment.equals(department)) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
+        if (userDepartment.equals("개발1실")) { //환경변수 값(개발1실) 부서 소속인 사용자만 추가
             JSONObject data = new JSONObject();
             ArrayList rolearr = new ArrayList();
             rolearr.add("DEVOPS");
