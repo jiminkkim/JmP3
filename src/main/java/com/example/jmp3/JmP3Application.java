@@ -1,24 +1,28 @@
 package com.example.jmp3;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.PropertySource;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 @SpringBootApplication
+public class JmP3Application implements CommandLineRunner {
 
-public class JmP3Application {
+    @Value("${user.department}")
+    private String department;
+
+    @Autowired
+    ADserver adserver;
 
     public static void main(String[] args) throws IOException {
-        ADserver ad = new ADserver();
-        ad.getUserAD();
+        SpringApplication.run(JmP3Application.class, args);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        adserver.getUserAD();
     }
 }

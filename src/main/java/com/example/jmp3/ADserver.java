@@ -3,13 +3,18 @@ package com.example.jmp3;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 
+@Component
 public class ADserver {
+
     public void getUserAD() {
+
         String userId = null;
         String userName = null;
         String userDepartment = null;
