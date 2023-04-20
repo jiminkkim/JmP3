@@ -39,7 +39,6 @@ public class ADserver {
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 반복 실행
     public void getUserAD() {
-
         String userId = null;
         String userName = null;
         String userDepartment = null;

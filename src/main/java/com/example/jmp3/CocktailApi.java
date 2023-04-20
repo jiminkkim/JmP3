@@ -306,7 +306,6 @@ public class CocktailApi {
             String returnMsg = in.readLine();
             System.out.println("응답 메시지: " + returnMsg);
         } catch (IOException ie) {
-
         }
     }
 }
