@@ -12,6 +12,9 @@ public class JmP3Application implements CommandLineRunner {
     @Autowired
     ADserver adserver;
 
+    @Autowired
+    CocktailApi api;
+
     public static void main(String[] args) throws IOException {
         SpringApplication.run(JmP3Application.class, args);
     }

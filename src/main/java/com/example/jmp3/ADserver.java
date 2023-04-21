@@ -36,6 +36,9 @@ public class ADserver {
     @Value("${adserver.address}")
     private String ad_server;
 
+    @Value("${cocktail.address}")
+    private String cocktail_server;
+
     @Autowired
     CocktailApi cocktailApi;
 
@@ -85,7 +88,7 @@ public class ADserver {
                 userDepartment = dpt_array[1]; // ex) 개발1실
 
                 // Cocktail 클러스터 현황 목록 조회
-                cocktailApi.getAccountSeq(userId, userName, userDepartment, department);
+                cocktailApi.getAccountSeq(userId, userName, userDepartment, department, cocktail_server);
             }
             bf.close();
         } catch (Exception e) {
