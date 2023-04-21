@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 /**
- * @brief ADserver
  * @section 작성정보
  * - author: 개발3실
  * - version: 1.0
@@ -34,9 +33,15 @@ public class ADserver {
     @Value("${user.department}")
     private String department;
 
+    @Value("${adserver.address}")
+    private String ad_server;
+
     @Autowired
     CocktailApi cocktailApi;
 
+    /**
+     * AD 서버의 사용자 정보 목록을 조회한다.
+     */
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public void getUserAD() {
         String userId = null;
@@ -44,7 +49,8 @@ public class ADserver {
         String userDepartment = null;
 
         try {
-            URL url = new URL("http://101.55.69.58:30001/users"); //URL 객체 생성
+            String url_ad = ad_server;
+            URL url = new URL(url_ad + "/users"); //URL 객체 생성
             BufferedReader bf;
             String line = "";
             String result = "";

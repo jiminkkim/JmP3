@@ -4,6 +4,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -12,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @brief Cocktail API
  * @section 작성정보
  * - author: 개발3실
  * - version: 1.0
@@ -27,10 +28,25 @@ import java.util.List;
 @Component
 public class CocktailApi {
 
+    @Value("${cocktail.address}")
+    private String cocktail_api;
+
+    @Autowired
+    CocktailApi cocktailApi;
+
+    /**
+     * Cocktail의 클러스터 현황 목록을 조회한다. @n
+     * 조회된 결과를 통해 AD서버의 사용자를 Cocktail의 다수의 플랫폼에 일괄적으로 추가한다.
+     * @param userId String: AD 서버에 등록되어 있는 사용자의 ID이다.
+     * @param userName String: AD 서버에 등록되어 있는 사용자의 이름이다.
+     * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
+     * @param department String: Cocktail에 등록할 특정 부서 명이다.
+     */
     // Cocktail 클러스터 현황 목록 조회
     public void getAccountSeq(String userId, String userName, String userDepartment, String department) {
         try {
-            URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
+            String url_cocktail = cocktail_api;
+            URL url = new URL(url_cocktail + "/api/cluster/v2/conditions"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -77,8 +93,9 @@ public class CocktailApi {
                 seq_num = Integer.parseInt(seq); //accountSeq 값 추출 ex)accountSeq: 4
                 if (seqList.indexOf(seq_num) < 0) { // accountSeq가 중복 값이 아니라면
                     seqList.add(seq_num); // 배열에 추가
-                    CocktailApi api = new CocktailApi();
-                    api.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
+                    cocktailApi.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
+//                    CocktailApi api = new CocktailApi();
+//                    api.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
                 } else { //값이 있으면
                 }
             }
@@ -89,10 +106,19 @@ public class CocktailApi {
         }
     }
 
+    /**
+     * Cocktail 내 특정 플랫폼 사용자 목록을 조회한다. @n
+     * @param userId String: AD 서버에 등록되어 있는 사용자의 ID이다.
+     * @param userName String: AD 서버에 등록되어 있는 사용자의 이름이다.
+     * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
+     * @param department String: Cocktail에 등록할 특정 부서 명이다.
+     * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     */
     // Cocktail 내 특정 accountSeq 사용자 목록 조회
     public void getAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq) {
         try {
-            URL url = new URL("http://api-server:8080/api/account/" + accountSeq + "/users"); //URL 객체 생성
+            String url_cocktail = cocktail_api;
+            URL url = new URL(url_cocktail + "/api/account/" + accountSeq + "/users"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -145,11 +171,13 @@ public class CocktailApi {
                 }
             }
 
-            CocktailApi api = new CocktailApi();
+            //CocktailApi api = new CocktailApi();
             if (addUser) {
-                api.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
+                cocktailApi.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
+//                api.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
             } else {
-                api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
+                cocktailApi.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
+//                api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
             }
             bf.close();
         } catch (Exception e) {
@@ -157,6 +185,14 @@ public class CocktailApi {
         }
     }
 
+    /**
+     * Cocktail 내 특정 플랫폼에 AD 서버 사용자를 추가한다. @n
+     * @param userId String: AD 서버에 등록되어 있는 사용자의 ID이다.
+     * @param userName String: AD 서버에 등록되어 있는 사용자의 이름이다.
+     * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
+     * @param department String: Cocktail에 등록할 특정 부서 명이다.
+     * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     */
     // 특정 accountSeq에 사용자 추가
     public void addAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq){
         String[] array = department.split(","); // ex) [개발1실, 개발2실, 개발3실]
@@ -172,7 +208,8 @@ public class CocktailApi {
                 data.put("userDepartment", userDepartment);
 
                 try {
-                    String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user";
+                    String url_cocktail = cocktail_api;
+                    String host_url = url_cocktail + "/api/account/" + accountSeq + "/user";
                     HttpURLConnection conn = null;
 
                     URL url = new URL(host_url);
@@ -218,8 +255,9 @@ public class CocktailApi {
                     String result_userSeq = json_result.get("userSeq").toString();
                     Integer userSeq = Integer.parseInt(result_userSeq);
 
-                    CocktailApi api = new CocktailApi();
-                    api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+                    //CocktailApi api = new CocktailApi();
+                    cocktailApi.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+//                    api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
 
                     bf.close();
                 } catch (IOException ie) {
@@ -231,6 +269,14 @@ public class CocktailApi {
         }
     }
 
+    /**
+     * Cocktail 내 특정 플랫폼의 사용자 부서 명을 수정한다. @n
+     * @param userId String: AD 서버에 등록되어 있는 사용자의 ID이다.
+     * @param userName String: AD 서버에 등록되어 있는 사용자의 이름이다.
+     * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
+     * @param userSeq Integer: Cocktail에 등록되어 있는 특정 사용자를 가리킨다.
+     * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     */
     // 특정 accountSeq 사용자 정보(부서) 수정
     public void modifyAccountUsers(String userId, String userName, String userDepartment, Integer userSeq, Integer accountSeq) {
         JSONObject data = new JSONObject();
@@ -244,7 +290,8 @@ public class CocktailApi {
         data.put("userDepartment", userDepartment);
 
         try {
-            String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user/" + userSeq;
+            String url_cocktail = cocktail_api;
+            String host_url = url_cocktail + "/api/account/" + accountSeq + "/user/" + userSeq;
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
@@ -267,25 +314,32 @@ public class CocktailApi {
             String returnMsg = in.readLine();
             System.out.println("응답 메시지: " + returnMsg);
 
-            CocktailApi api = new CocktailApi();
-            api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+            //CocktailApi api = new CocktailApi();
+            cocktailApi.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+            //api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
 
         } catch (IOException ie) {
 
         }
     }
 
+    /**
+     * Cocktail 내 특정 플랫폼의 사용자를 비 활성화한다. @n
+     * @param userSeq Integer: Cocktail에 등록되어 있는 특정 사용자를 가리킨다.
+     * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     */
     // 특정 accountSeq 사용자 비활성화
-    public void modifyUserInactive(Integer userseq, Integer accountSeq) {
+    public void modifyUserInactive(Integer userSeq, Integer accountSeq) {
         JSONObject data = new JSONObject();
 
         data.put("inactiveYn", "Y");
-        data.put("userSeq", userseq);
+        data.put("userSeq", userSeq);
 
         System.out.println(data);
 
         try {
-            String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user/"+ userseq + "/inactive";
+            String url_cocktail = cocktail_api;
+            String host_url = url_cocktail + "/api/account/" + accountSeq + "/user/"+ userSeq + "/inactive";
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
