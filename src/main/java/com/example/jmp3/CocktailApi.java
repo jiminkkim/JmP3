@@ -31,8 +31,7 @@ public class CocktailApi {
     @Value("${cocktail.address}")
     private String cocktail_api;
 
-    @Autowired
-    CocktailApi cocktailApi;
+    String url_cocktail = cocktail_api;
 
     /**
      * Cocktail의 클러스터 현황 목록을 조회한다. @n
@@ -45,7 +44,6 @@ public class CocktailApi {
     // Cocktail 클러스터 현황 목록 조회
     public void getAccountSeq(String userId, String userName, String userDepartment, String department) {
         try {
-            String url_cocktail = cocktail_api;
             URL url = new URL(url_cocktail + "/api/cluster/v2/conditions"); //URL 객체 생성
 
             //HTTP Connection 구하기
@@ -93,9 +91,8 @@ public class CocktailApi {
                 seq_num = Integer.parseInt(seq); //accountSeq 값 추출 ex)accountSeq: 4
                 if (seqList.indexOf(seq_num) < 0) { // accountSeq가 중복 값이 아니라면
                     seqList.add(seq_num); // 배열에 추가
-                    cocktailApi.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
-//                    CocktailApi api = new CocktailApi();
-//                    api.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
+                    CocktailApi api = new CocktailApi();
+                    api.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
                 } else { //값이 있으면
                 }
             }
@@ -117,7 +114,6 @@ public class CocktailApi {
     // Cocktail 내 특정 accountSeq 사용자 목록 조회
     public void getAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq) {
         try {
-            String url_cocktail = cocktail_api;
             URL url = new URL(url_cocktail + "/api/account/" + accountSeq + "/users"); //URL 객체 생성
 
             //HTTP Connection 구하기
@@ -171,13 +167,11 @@ public class CocktailApi {
                 }
             }
 
-            //CocktailApi api = new CocktailApi();
+            CocktailApi api = new CocktailApi();
             if (addUser) {
-                cocktailApi.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
-//                api.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
+                api.addAccountUsers(userId, userName, userDepartment, department, accountSeq);
             } else {
-                cocktailApi.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
-//                api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
+                api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq);
             }
             bf.close();
         } catch (Exception e) {
@@ -208,7 +202,6 @@ public class CocktailApi {
                 data.put("userDepartment", userDepartment);
 
                 try {
-                    String url_cocktail = cocktail_api;
                     String host_url = url_cocktail + "/api/account/" + accountSeq + "/user";
                     HttpURLConnection conn = null;
 
@@ -255,9 +248,8 @@ public class CocktailApi {
                     String result_userSeq = json_result.get("userSeq").toString();
                     Integer userSeq = Integer.parseInt(result_userSeq);
 
-                    //CocktailApi api = new CocktailApi();
-                    cocktailApi.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
-//                    api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+                    CocktailApi api = new CocktailApi();
+                    api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
 
                     bf.close();
                 } catch (IOException ie) {
@@ -290,7 +282,6 @@ public class CocktailApi {
         data.put("userDepartment", userDepartment);
 
         try {
-            String url_cocktail = cocktail_api;
             String host_url = url_cocktail + "/api/account/" + accountSeq + "/user/" + userSeq;
             HttpURLConnection conn = null;
 
@@ -314,9 +305,8 @@ public class CocktailApi {
             String returnMsg = in.readLine();
             System.out.println("응답 메시지: " + returnMsg);
 
-            //CocktailApi api = new CocktailApi();
-            cocktailApi.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
-            //api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+            CocktailApi api = new CocktailApi();
+            api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
 
         } catch (IOException ie) {
 
@@ -338,7 +328,6 @@ public class CocktailApi {
         System.out.println(data);
 
         try {
-            String url_cocktail = cocktail_api;
             String host_url = url_cocktail + "/api/account/" + accountSeq + "/user/"+ userSeq + "/inactive";
             HttpURLConnection conn = null;
 
