@@ -37,7 +37,7 @@ public class ADserver {
     @Autowired
     CocktailApi cocktailApi;
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정에 반복 실행
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public void getUserAD() {
         String userId = null;
         String userName = null;
@@ -81,7 +81,6 @@ public class ADserver {
                 // Cocktail 클러스터 현황 목록 조회
                 cocktailApi.getAccountSeq(userId, userName, userDepartment, department);
             }
-            //여기까지
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());

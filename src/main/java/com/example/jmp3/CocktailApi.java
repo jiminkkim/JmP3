@@ -160,71 +160,74 @@ public class CocktailApi {
 
     // 특정 accountSeq에 사용자 추가
     public void addAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq){
-        if (userDepartment.equals(department)) { //환경변수 값에 해당하는 (ex. 개발1실) 부서 소속인 사용자만 추가
-            JSONObject data = new JSONObject();
-            ArrayList rolearr = new ArrayList();
-            rolearr.add("DEVOPS");
+        String[] array = department.split(","); // ex) [개발1실, 개발2실, 개발3실]
+        for (int i = 0; i < array.length; i++) {
+            if (userDepartment.equals(array[i])) { //환경변수 값에 해당하는 (ex. 개발1실) 부서 소속인 사용자만 추가
+                JSONObject data = new JSONObject();
+                ArrayList rolearr = new ArrayList();
+                rolearr.add("DEVOPS");
 
-            data.put("userName", userName);
-            data.put("userId", userId);
-            data.put("roles", rolearr);
-            data.put("userDepartment", userDepartment);
+                data.put("userName", userName);
+                data.put("userId", userId);
+                data.put("roles", rolearr);
+                data.put("userDepartment", userDepartment);
 
-            try {
-                String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user";
-                HttpURLConnection conn = null;
+                try {
+                    String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user";
+                    HttpURLConnection conn = null;
 
-                URL url = new URL(host_url);
-                conn = (HttpURLConnection) url.openConnection();
+                    URL url = new URL(host_url);
+                    conn = (HttpURLConnection) url.openConnection();
 
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-                //request header set
-                conn.setRequestProperty("user-id", "1");
-                conn.setRequestProperty("user-role", "ADMIN");
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/json");
+                    //request header set
+                    conn.setRequestProperty("user-id", "1");
+                    conn.setRequestProperty("user-role", "ADMIN");
 
-                conn.setDoOutput(true);
-                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+                    conn.setDoOutput(true);
+                    BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
 
-                bw.write(data.toString());
-                bw.flush();
-                bw.close();
+                    bw.write(data.toString());
+                    bw.flush();
+                    bw.close();
 
-                //response
-                InputStream is = conn.getInputStream();
-                BufferedReader bf = new BufferedReader(new InputStreamReader(is));
+                    //response
+                    InputStream is = conn.getInputStream();
+                    BufferedReader bf = new BufferedReader(new InputStreamReader(is));
 
-                String line = "";
-                String result = "";
+                    String line = "";
+                    String result = "";
 
-                //버퍼에 있는 정보 확인
-                while ((line = bf.readLine()) != null) {
-                    result = result.concat(line); // 받아온 데이터 결과 저장
+                    //버퍼에 있는 정보 확인
+                    while ((line = bf.readLine()) != null) {
+                        result = result.concat(line); // 받아온 데이터 결과 저장
+                    }
+
+                    //JSON parser를 만들어 만들어진 문자열 데이터를 객체화
+                    Object obj = null;
+                    JSONObject jsonObj = null;
+                    JSONParser jsonParser = new JSONParser();
+
+                    obj = jsonParser.parse(result); //JSONParser를 통해 Object로 바꾸고
+                    jsonObj = (JSONObject) obj; // 이 Object를 다시 JSONObject로 캐스팅
+
+                    Object parse_result = jsonObj.get("result");
+
+                    JSONObject json_result = null;
+                    json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
+                    String result_userSeq = json_result.get("userSeq").toString();
+                    Integer userSeq = Integer.parseInt(result_userSeq);
+
+                    CocktailApi api = new CocktailApi();
+                    api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
+
+                    bf.close();
+                } catch (IOException ie) {
+                    System.out.println(ie.getMessage());
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
                 }
-
-                //JSON parser를 만들어 만들어진 문자열 데이터를 객체화
-                Object obj = null;
-                JSONObject jsonObj = null;
-                JSONParser jsonParser = new JSONParser();
-
-                obj = jsonParser.parse(result); //JSONParser를 통해 Object로 바꾸고
-                jsonObj = (JSONObject) obj; // 이 Object를 다시 JSONObject로 캐스팅
-
-                Object parse_result = jsonObj.get("result");
-
-                JSONObject json_result = null;
-                json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
-                String result_userSeq = json_result.get("userSeq").toString();
-                Integer userSeq = Integer.parseInt(result_userSeq);
-
-                CocktailApi api = new CocktailApi();
-                api.modifyUserInactive(userSeq, accountSeq); // 사용자 비활성화
-
-                bf.close();
-            } catch (IOException ie) {
-                System.out.println(ie.getMessage());
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
             }
         }
     }
