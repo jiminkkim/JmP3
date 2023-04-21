@@ -80,7 +80,6 @@ public class CocktailApi {
                     CocktailApi api = new CocktailApi();
                     api.getAccountUsers(userId, userName, userDepartment, department, seq_num); //특정 accountSeq 사용자 목록 조회
                 } else { //값이 있으면
-                    System.out.println("중복 된 accountSeq임.");
                 }
             }
             seqList.clear(); //배열 초기화
