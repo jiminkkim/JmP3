@@ -43,7 +43,7 @@ public class CocktailApi {
     // Cocktail 클러스터 현황 목록 조회
     public void getAccountSeq(String userId, String userName, String userDepartment, String department) {
         try {
-            URL url = new URL(url_cocktail + "/api/cluster/v2/conditions"); //URL 객체 생성
+            URL url = new URL("http://api-server:8080/api/cluster/v2/conditions"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -113,7 +113,7 @@ public class CocktailApi {
     // Cocktail 내 특정 accountSeq 사용자 목록 조회
     public void getAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq) {
         try {
-            URL url = new URL(url_cocktail + "/api/account/" + accountSeq + "/users"); //URL 객체 생성
+            URL url = new URL("http://api-server:8080/api/account/" + accountSeq + "/users"); //URL 객체 생성
 
             //HTTP Connection 구하기
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -201,7 +201,7 @@ public class CocktailApi {
                 data.put("userDepartment", userDepartment);
 
                 try {
-                    String host_url = url_cocktail + "/api/account/" + accountSeq + "/user";
+                    String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user";
                     HttpURLConnection conn = null;
 
                     URL url = new URL(host_url);
@@ -281,7 +281,7 @@ public class CocktailApi {
         data.put("userDepartment", userDepartment);
 
         try {
-            String host_url = url_cocktail + "/api/account/" + accountSeq + "/user/" + userSeq;
+            String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user/" + userSeq;
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
@@ -327,7 +327,7 @@ public class CocktailApi {
         System.out.println(data);
 
         try {
-            String host_url = url_cocktail + "/api/account/" + accountSeq + "/user/"+ userSeq + "/inactive";
+            String host_url = "http://api-server:8080/api/account/" + accountSeq + "/user/"+ userSeq + "/inactive";
             HttpURLConnection conn = null;
 
             URL url = new URL(host_url);
