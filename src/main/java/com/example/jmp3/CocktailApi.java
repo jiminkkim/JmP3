@@ -27,7 +27,6 @@ import java.util.List;
  */
 @Component
 public class CocktailApi {
-
     @Value("${cocktail.address}")
     private String cocktail_api;
 

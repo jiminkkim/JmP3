@@ -9,7 +9,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class JmP3Application implements CommandLineRunner {
-
     @Autowired
     ADserver adserver;
 
