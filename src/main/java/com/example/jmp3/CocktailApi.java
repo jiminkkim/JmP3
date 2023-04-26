@@ -148,7 +148,7 @@ public class CocktailApi {
             JSONObject obj = (JSONObject) parser.parse(result);
             JSONArray parse_result = (JSONArray) obj.get("result");
 
-            boolean addUser = true; // 사용자 추가 여부
+            boolean addUser = false; // 사용자 추가 여부
             boolean userInactive = false; // 사용자 비활성화 여부
             Integer userSeq = null;
 
@@ -169,6 +169,7 @@ public class CocktailApi {
                     break;
                 } else {
                     addUser = true; //사용자 추가
+                    userInactive = false;
                 }
             }
 
