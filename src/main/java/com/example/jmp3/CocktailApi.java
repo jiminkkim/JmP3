@@ -37,6 +37,7 @@ public class CocktailApi {
      * @param userName String: AD 서버에 등록되어 있는 사용자의 이름이다.
      * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
      * @param department String: Cocktail에 등록할 특정 부서 명이다.
+     * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // Cocktail 클러스터 현황 목록 조회
     public void getAccountSeq(String userId, String userName, String userDepartment, String department, String cocktail_server) {
@@ -107,6 +108,7 @@ public class CocktailApi {
      * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
      * @param department String: Cocktail에 등록할 특정 부서 명이다.
      * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // Cocktail 내 특정 accountSeq 사용자 목록 조회
     public void getAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq, String cocktail_server) {
@@ -147,6 +149,7 @@ public class CocktailApi {
             JSONArray parse_result = (JSONArray) obj.get("result");
 
             boolean addUser = true; // 사용자 추가 여부
+            boolean userInactive = true; // 사용자 비활성화 여부
             Integer userSeq = null;
 
             //AD 서버의 userId가 칵테일 유저 목록 중에 있는지 확인
@@ -158,6 +161,11 @@ public class CocktailApi {
                     addUser = false; //사용자 수정
                     String obj_userSeq = jsonObj.get("userSeq").toString(); //userSeq 추출, ex)136
                     userSeq = Integer.parseInt(obj_userSeq);
+                    String obj_userDepartment = jsonObj.get("userDepartment").toString(); //userDepartment 추출, ex) 개발3실
+
+                    if (obj_userDepartment != userDepartment) { //부서가 변경됐다면
+                        userInactive = true;
+                    }
                     break;
                 } else {
                     addUser = true; //사용자 추가
@@ -167,7 +175,7 @@ public class CocktailApi {
             CocktailApi api = new CocktailApi();
             if (addUser) {
                 api.addAccountUsers(userId, userName, userDepartment, department, accountSeq, cocktail_server);
-            } else {
+            } else if (userInactive){
                 api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq, cocktail_server);
             }
             bf.close();
@@ -183,6 +191,7 @@ public class CocktailApi {
      * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
      * @param department String: Cocktail에 등록할 특정 부서 명이다.
      * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // 특정 accountSeq에 사용자 추가
     public void addAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq, String cocktail_server){
@@ -265,6 +274,7 @@ public class CocktailApi {
      * @param userDepartment String: AD 서버에 등록되어 있는 사용자의 부서 명이다.
      * @param userSeq Integer: Cocktail에 등록되어 있는 특정 사용자를 가리킨다.
      * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // 특정 accountSeq 사용자 정보(부서) 수정
     public void modifyAccountUsers(String userId, String userName, String userDepartment, Integer userSeq, Integer accountSeq, String cocktail_server) {
@@ -314,6 +324,7 @@ public class CocktailApi {
      * Cocktail 내 특정 플랫폼의 사용자를 비 활성화한다. @n
      * @param userSeq Integer: Cocktail에 등록되어 있는 특정 사용자를 가리킨다.
      * @param accountSeq Integer: Cocktail 내 특정 플랫폼을 가리킨다.
+     * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // 특정 accountSeq 사용자 비활성화
     public void modifyUserInactive(Integer userSeq, Integer accountSeq, String cocktail_server) {
