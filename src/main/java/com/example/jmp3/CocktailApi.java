@@ -163,7 +163,7 @@ public class CocktailApi {
                     userSeq = Integer.parseInt(obj_userSeq);
                     String obj_userDepartment = jsonObj.get("userDepartment").toString(); //userDepartment 추출, ex) 개발3실
 
-                    if (obj_userDepartment != userDepartment) { //부서가 변경됐다면
+                    if (!obj_userDepartment.equals(userDepartment)) { //부서가 변경됐다면
                         userInactive = true;
                     }
                     break;
