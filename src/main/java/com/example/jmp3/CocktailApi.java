@@ -149,7 +149,7 @@ public class CocktailApi {
             JSONArray parse_result = (JSONArray) obj.get("result");
 
             boolean addUser = true; // 사용자 추가 여부
-            boolean userInactive = true; // 사용자 비활성화 여부
+            boolean userInactive = false; // 사용자 비활성화 여부
             Integer userSeq = null;
 
             //AD 서버의 userId가 칵테일 유저 목록 중에 있는지 확인
