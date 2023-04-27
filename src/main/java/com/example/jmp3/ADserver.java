@@ -77,7 +77,7 @@ public class ADserver {
                 JSONObject jsonObj = (JSONObject) temp.get(i);
 
                 JSONObject attributes = (JSONObject) jsonObj.get("attributes");
-//                if (attributes != null) {
+                if (attributes != null) {
                     JSONArray jsonArray = (JSONArray) attributes.get("LDAP_ENTRY_DN");
                     String str = jsonArray.get(0).toString();
                     String[] array = str.split(","); // ex) CN=1110000,OU=개발1실,---
@@ -90,7 +90,7 @@ public class ADserver {
 
                     // Cocktail 클러스터 현황 목록 조회
                     cocktailApi.getAccountSeq(userId, userName, userDepartment, department, cocktail_server);
-//                } else System.out.println("null입니다.~~");
+                } else System.out.println("null입니다.~~");
             }
             bf.close();
         } catch (Exception e) {
