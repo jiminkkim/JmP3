@@ -35,12 +35,12 @@ public class JmP3Application implements CommandLineRunner {
     @Autowired
     CocktailApi api;
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public static void main(String[] args) throws IOException {
         SpringApplication.run(JmP3Application.class, args);
     }
 
     @Override
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public void run(String... args) throws Exception {
         String userId = null;
         String userName = null;
