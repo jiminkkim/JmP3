@@ -113,14 +113,15 @@ public class JmP3Application implements CommandLineRunner {
             }
 
             if (addUser) {
-                UserAdd(userId, userName, userDepartment, accountSeq, userSeq); //사용자 추가
+                UserAdd(userId, userName, userDepartment, accountSeq); //사용자 추가
             } else if (userInactive){
                 UserModify(userId, userName, userDepartment, accountSeq, userSeq); //사용자 수정
             }
     }
-    public void UserAdd(String userId, String userName, String userDepartment, Integer accountSeq, Integer userSeq) {
-        api.addAccountUsers(userId, userName, userDepartment, department, accountSeq, cocktail_server);
-        api.modifyUserInactive(userSeq, accountSeq, cocktail_server);
+    public void UserAdd(String userId, String userName, String userDepartment, Integer accountSeq) {
+        Integer user_seq;
+        user_seq = api.addAccountUsers(userId, userName, userDepartment, department, accountSeq, cocktail_server);
+        api.modifyUserInactive(user_seq, accountSeq, cocktail_server);
     }
 
     public void UserModify(String userId, String userName, String userDepartment, Integer accountSeq, Integer userSeq) {

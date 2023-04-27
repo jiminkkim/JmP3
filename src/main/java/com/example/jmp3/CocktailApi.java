@@ -151,8 +151,9 @@ public class CocktailApi {
      * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // 특정 accountSeq에 사용자 추가
-    public void addAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq, String cocktail_server){
+    public Integer addAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq, String cocktail_server){
         String[] array = department.split(","); // ex) [개발1실, 개발2실, 개발3실]
+        Integer userSeq = null;
         for (int i = 0; i < array.length; i++) {
             if (userDepartment.equals(array[i])) { //환경변수 값에 해당하는 (ex. 개발1실) 부서 소속인 사용자만 추가
                 JSONObject data = new JSONObject();
@@ -209,7 +210,7 @@ public class CocktailApi {
                     JSONObject json_result = null;
                     json_result = (JSONObject) parse_result; //Object를 JSONObject로 캐스팅
                     String result_userSeq = json_result.get("userSeq").toString();
-                    Integer userSeq = Integer.parseInt(result_userSeq);
+                    userSeq = Integer.parseInt(result_userSeq);
 
                     bf.close();
                 } catch (IOException ie) {
@@ -219,6 +220,7 @@ public class CocktailApi {
                 }
             }
         }
+        return userSeq;
     }
 
     /**
