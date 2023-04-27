@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@EnableScheduling
-@Configuration
 @SpringBootApplication
 public class JmP3Application implements CommandLineRunner {
 
@@ -40,7 +38,6 @@ public class JmP3Application implements CommandLineRunner {
     }
 
     @Override
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public void run(String... args) throws Exception {
         String userId = null;
         String userName = null;
