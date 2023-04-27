@@ -90,7 +90,7 @@ public class ADserver {
 
                     // Cocktail 클러스터 현황 목록 조회
                     cocktailApi.getAccountSeq(userId, userName, userDepartment, department, cocktail_server);
-                } else System.out.println("null입니다.~~");
+                }
             }
             bf.close();
         } catch (Exception e) {
