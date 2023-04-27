@@ -26,8 +26,7 @@ import java.net.URL;
  * - 수정자: 김지민
  * - 수정내용: 최초생성
  */
-@EnableScheduling
-@Configuration
+
 @Component
 public class ADserver {
     @Value("${user.department}")
@@ -45,7 +44,6 @@ public class ADserver {
     /**
      * AD 서버의 사용자 정보 목록을 조회한다.
      */
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public JSONArray getUserAD() {
         String userId = null;
         String userName = null;

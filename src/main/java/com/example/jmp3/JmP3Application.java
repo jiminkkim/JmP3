@@ -7,11 +7,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@EnableScheduling
+@Configuration
 @SpringBootApplication
 public class JmP3Application implements CommandLineRunner {
 
@@ -30,6 +35,7 @@ public class JmP3Application implements CommandLineRunner {
     @Autowired
     CocktailApi api;
 
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정마다 실행
     public static void main(String[] args) throws IOException {
         SpringApplication.run(JmP3Application.class, args);
     }
