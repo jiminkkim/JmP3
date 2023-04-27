@@ -72,7 +72,6 @@ public class CocktailApi {
             while ((line = bf.readLine()) != null) {
                 result = result.concat(line); // 받아온 데이터 결과 저장
             }
-            System.out.println(result);
 
             //JSON parser를 만들어 만들어진 문자열 데이터를 객체화
             JSONParser parser = new JSONParser();
