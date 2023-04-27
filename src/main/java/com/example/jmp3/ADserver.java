@@ -77,18 +77,20 @@ public class ADserver {
                 JSONObject jsonObj = (JSONObject) temp.get(i);
 
                 JSONObject attributes = (JSONObject) jsonObj.get("attributes");
-                JSONArray jsonArray = (JSONArray) attributes.get("LDAP_ENTRY_DN");
-                String str = jsonArray.get(0).toString();
-                String[] array = str.split(","); // ex) CN=1110000,OU=개발1실,---
-                String dpt = array[1]; // ex) OU=개발1실
-                String[] dpt_array = dpt.split("="); // ex) 개발1실
+//                if (attributes != null) {
+                    JSONArray jsonArray = (JSONArray) attributes.get("LDAP_ENTRY_DN");
+                    String str = jsonArray.get(0).toString();
+                    String[] array = str.split(","); // ex) CN=1110000,OU=개발1실,---
+                    String dpt = array[1]; // ex) OU=개발1실
+                    String[] dpt_array = dpt.split("="); // ex) 개발1실
 
-                userId = jsonObj.get("username").toString(); // ex) 1110000
-                userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // ex) 고하은
-                userDepartment = dpt_array[1]; // ex) 개발1실
+                    userId = jsonObj.get("username").toString(); // ex) 1110000
+                    userName = jsonObj.get("lastName").toString() + jsonObj.get("firstName").toString(); // ex) 고하은
+                    userDepartment = dpt_array[1]; // ex) 개발1실
 
-                // Cocktail 클러스터 현황 목록 조회
-                cocktailApi.getAccountSeq(userId, userName, userDepartment, department, cocktail_server);
+                    // Cocktail 클러스터 현황 목록 조회
+                    cocktailApi.getAccountSeq(userId, userName, userDepartment, department, cocktail_server);
+//                } else System.out.println("null입니다.~~");
             }
             bf.close();
         } catch (Exception e) {
