@@ -40,7 +40,8 @@ public class CocktailApi {
      * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // Cocktail 클러스터 현황 목록 조회
-    public void getAccountSeq(String userId, String userName, String userDepartment, String department, String cocktail_server) {
+    public JSONArray getAccountSeq(String cocktail_server) {
+        JSONArray parse_result = null;
         try {
             URL url = new URL(cocktail_server + "/api/cluster/v2/conditions"); //URL 객체 생성
 
@@ -76,29 +77,13 @@ public class CocktailApi {
             //JSON parser를 만들어 만들어진 문자열 데이터를 객체화
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(result);
-            JSONArray parse_result = (JSONArray) obj.get("result");
+            parse_result = (JSONArray) obj.get("result");
 
-            // accountSeq 중복 확인을 위해 배열 생성
-            List<Integer> seqList = new ArrayList<Integer>();
-
-            for (int i = 0; i < parse_result.size(); i++) {
-                Integer seq_num = null;
-                JSONObject jsonObj = (JSONObject) parse_result.get(i);
-                JSONObject jsonAccount = (JSONObject) jsonObj.get("account");
-                String seq = jsonAccount.get("accountSeq").toString();
-                seq_num = Integer.parseInt(seq); //accountSeq 값 추출 ex)accountSeq: 4
-                if (seqList.indexOf(seq_num) < 0) { // accountSeq가 중복 값이 아니라면
-                    seqList.add(seq_num); // 배열에 추가
-                    CocktailApi api = new CocktailApi();
-                    api.getAccountUsers(userId, userName, userDepartment, department, seq_num, cocktail_server); //특정 accountSeq 사용자 목록 조회
-                } else { //값이 있으면
-                }
-            }
-            seqList.clear(); //배열 초기화
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return parse_result;
     }
 
     /**
@@ -111,7 +96,8 @@ public class CocktailApi {
      * @param cocktail_server String: Cocktail API Server 주소이다.
      */
     // Cocktail 내 특정 accountSeq 사용자 목록 조회
-    public void getAccountUsers(String userId, String userName, String userDepartment, String department, Integer accountSeq, String cocktail_server) {
+    public JSONArray getAccountUsers(Integer accountSeq, String cocktail_server) {
+        JSONArray parse_result = null;
         try {
             URL url = new URL(cocktail_server + "/api/account/" + accountSeq + "/users"); //URL 객체 생성
 
@@ -146,43 +132,13 @@ public class CocktailApi {
             //JSON parser를 만들어 만들어진 문자열 데이터를 객체화
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject) parser.parse(result);
-            JSONArray parse_result = (JSONArray) obj.get("result");
+            parse_result = (JSONArray) obj.get("result");
 
-            boolean addUser = false; // 사용자 추가 여부
-            boolean userInactive = false; // 사용자 비활성화 여부
-            Integer userSeq = null;
-
-            //AD 서버의 userId가 칵테일 유저 목록 중에 있는지 확인
-            for (int i = 0; i < parse_result.size(); i++) {
-                JSONObject jsonObj = (JSONObject) parse_result.get(i);
-                String obj_userId = jsonObj.get("userId").toString(); // userId 추출, ex) 1110000
-
-                if (obj_userId.equals(userId)) { //칵테일 플랫폼에 있는 유저면
-                    addUser = false; //사용자 수정
-                    String obj_userSeq = jsonObj.get("userSeq").toString(); //userSeq 추출, ex)136
-                    userSeq = Integer.parseInt(obj_userSeq);
-                    String obj_userDepartment = jsonObj.get("userDepartment").toString(); //userDepartment 추출, ex) 개발3실
-
-                    if (!obj_userDepartment.equals(userDepartment)) { //부서가 변경됐다면
-                        userInactive = true;
-                    }
-                    break;
-                } else {
-                    addUser = true; //사용자 추가
-                    userInactive = false;
-                }
-            }
-
-            CocktailApi api = new CocktailApi();
-            if (addUser) {
-                api.addAccountUsers(userId, userName, userDepartment, department, accountSeq, cocktail_server);
-            } else if (userInactive){
-                api.modifyAccountUsers(userId, userName, userDepartment, userSeq, accountSeq, cocktail_server);
-            }
             bf.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return parse_result;
     }
 
     /**
@@ -255,9 +211,6 @@ public class CocktailApi {
                     String result_userSeq = json_result.get("userSeq").toString();
                     Integer userSeq = Integer.parseInt(result_userSeq);
 
-                    CocktailApi api = new CocktailApi();
-                    api.modifyUserInactive(userSeq, accountSeq, cocktail_server); // 사용자 비활성화
-
                     bf.close();
                 } catch (IOException ie) {
                     System.out.println(ie.getMessage());
@@ -312,9 +265,6 @@ public class CocktailApi {
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String returnMsg = in.readLine();
             System.out.println("응답 메시지: " + returnMsg);
-
-            CocktailApi api = new CocktailApi();
-            api.modifyUserInactive(userSeq, accountSeq, cocktail_server); // 사용자 비활성화
 
         } catch (IOException ie) {
 
